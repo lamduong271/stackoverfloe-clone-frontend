@@ -1,17 +1,19 @@
-import React from "react";
+import React, { FC, ReactElement } from "react";
 import Login from "./Components/Login/Login";
 
 import { AppContextProvider, useAppContext } from "./Services/app-context";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Register from "./Components/Register/Register";
 import Home from "./Components/Home/Home";
+import Header from "./Components/Header/Header";
+import Question from "./Components/Question/Question/Question";
 
-const ProtectedRoutes = () => {
+const ProtectedRoutes: FC<{ component: ReactElement }> = ({ component }) => {
   const { jwtToken } = useAppContext();
   const localslToken = localStorage.getItem("jwtToken");
   const auth = jwtToken || localslToken;
 
-  return auth ? <Navigate to="/" /> : <Navigate to="/login" />;
+  return auth ? component : <Navigate to="/login" />;
 };
 
 const Components = () => {
@@ -21,8 +23,11 @@ const Components = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/posts" element={<ProtectedRoutes />} />
+          <Route path="/" element={<ProtectedRoutes component={<Home />} />} />
+          <Route
+            path="/question"
+            element={<ProtectedRoutes component={<Question />} />}
+          />
           {/* <Route path='/posts/:sender' element={<ProtectedRoutes />} /> */}
         </Routes>
       </BrowserRouter>
@@ -33,7 +38,7 @@ const Components = () => {
 function App() {
   return (
     <AppContextProvider>
-      <h1>Stackoverflow clone</h1>
+      <Header></Header>
       <Components />
     </AppContextProvider>
   );
