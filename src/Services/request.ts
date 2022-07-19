@@ -40,7 +40,7 @@ interface AuthorType {
   email: string;
   name?: string;
 }
-interface QuestionType {
+export interface QuestionType {
   author: AuthorType;
   title: string;
   textBody: string;
@@ -68,6 +68,6 @@ export const postQuestionResponseDate = async (
 export const getAllQuestionsResponseDate = async (): Promise<
   QuestionType[]
 > => {
-  const { data: authResponseData } = await instance.get("/question", config);
+  const { data: authResponseData } = await instance.get("/question");
   return authResponseData;
 };

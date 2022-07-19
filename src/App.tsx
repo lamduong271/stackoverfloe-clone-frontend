@@ -7,6 +7,7 @@ import Register from "./Components/Register/Register";
 import Home from "./Components/Home/Home";
 import Header from "./Components/Header/Header";
 import Question from "./Components/Question/Question/Question";
+import QuestionList from "./Components/Question/QuestionList/QuestionList";
 
 const ProtectedRoutes: FC<{ component: ReactElement }> = ({ component }) => {
   const { jwtToken } = useAppContext();
@@ -25,9 +26,10 @@ const Components = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<ProtectedRoutes component={<Home />} />} />
           <Route
-            path="/question"
+            path="/post-question"
             element={<ProtectedRoutes component={<Question />} />}
           />
+          <Route path="/questions" element={<QuestionList />} />
           {/* <Route path='/posts/:sender' element={<ProtectedRoutes />} /> */}
         </Routes>
       </BrowserRouter>
