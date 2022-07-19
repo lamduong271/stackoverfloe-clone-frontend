@@ -1,10 +1,12 @@
 import { FC, useState } from "react";
 import { FormControl, Box, TextField, Button } from "@mui/material";
-import { QuestionBody } from "./Question.styles";
 import MarkdownEditor from "./MarkdownEditor";
+import { EditorState } from "draft-js";
 
 const Question: FC = () => {
-  const [questionBody, setQuestionBody] = useState<string>("");
+  const [questionBody, setQuestionBody] = useState(EditorState.createEmpty());
+  const [questionTitle, setQuestionTitle] = useState<string>("");
+
   return (
     <div>
       <h2>Question form</h2>
@@ -21,6 +23,8 @@ const Question: FC = () => {
             id="outlined-basic"
             label="Question title"
             variant="outlined"
+            value={questionTitle}
+            onChange={(e) => setQuestionTitle(e.target.value)}
           />
         </Box>
         <Box
@@ -31,8 +35,9 @@ const Question: FC = () => {
         >
           <label htmlFor="body"> Question Body </label>
           <MarkdownEditor
-            onChange={(event) => setQuestionBody(event.target.value)}
-          ></MarkdownEditor>
+            questionBody={questionBody}
+            setQuestionBody={setQuestionBody}
+          />
         </Box>
         <Button variant="contained">Submit question</Button>
       </FormControl>
