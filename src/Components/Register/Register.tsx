@@ -7,21 +7,9 @@ import {
   LoginWrapper,
   CongratComponent,
 } from "./Register.styles";
-import { instance } from "../../Services/api";
 import { useNavigate } from "react-router-dom";
+import { getRegisterResponseData } from "../../Services/request";
 
-export const getAuthResponseDate = async (
-  name: string,
-  email: string,
-  password: string
-): Promise<string> => {
-  const { data: authResponseData } = await instance.post("/auth/register", {
-    name,
-    email,
-    password,
-  });
-  return authResponseData;
-};
 const Register: FC = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -32,7 +20,11 @@ const Register: FC = () => {
   const registerHandler = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     try {
-      const authResponseData = await getAuthResponseDate(name, email, password);
+      const authResponseData = await getRegisterResponseData(
+        name,
+        email,
+        password
+      );
       if (authResponseData === "ok") {
         setRegisterSuccess(true);
       }

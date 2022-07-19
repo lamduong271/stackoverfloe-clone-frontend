@@ -1,4 +1,4 @@
-import React, { FC, FormEvent, useState } from "react";
+import { FC, FormEvent, useState } from "react";
 import {
   Button,
   FormField,
@@ -6,25 +6,10 @@ import {
   LoginForm,
   LoginWrapper,
 } from "./Login.styles";
-import { instance } from "../../Services/api";
 import { useAppContext } from "../../Services/app-context";
 import { useNavigate } from "react-router-dom";
+import { getLoginResponseDate } from "../../Services/request";
 
-interface AuthResponseType {
-  success: boolean;
-  token: string;
-}
-
-export const getAuthResponseDate = async (
-  email: string,
-  password: string
-): Promise<AuthResponseType> => {
-  const { data: authResponseData } = await instance.post("/auth/login", {
-    email,
-    password,
-  });
-  return authResponseData;
-};
 const Login: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -33,7 +18,7 @@ const Login: FC = () => {
 
   const submitFeedbackHandler = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-    const authResponseData = await getAuthResponseDate(email, password);
+    const authResponseData = await getLoginResponseDate(email, password);
     if (authResponseData.success) {
       setJwtToken(authResponseData.token);
       localStorage.setItem("jwtToken", authResponseData.token);

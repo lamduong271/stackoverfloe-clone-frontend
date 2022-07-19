@@ -11,8 +11,8 @@ interface EditorProp {
 }
 const MarkdownEditor: React.FC<EditorProp> = (props) => {
   const { setQuestionBody, questionBody } = props;
-  const onEditorStateChange = (editorState: any) => {
-    setQuestionBody(editorState);
+  const onEditorStateChange = (questionBody: EditorState) => {
+    setQuestionBody(questionBody);
   };
 
   return (
