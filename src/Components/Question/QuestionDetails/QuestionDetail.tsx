@@ -6,6 +6,7 @@ import {
   getUserById,
   postComment,
   QuestionType,
+  UserResponseType,
 } from "../../../Services/request";
 import moment from "moment";
 import parse from "html-react-parser";
@@ -28,6 +29,32 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+const RenderComment: FC<{ author: string; text: string }> = ({
+  author,
+  text,
+}) => {
+  const [user, setUser] = useState<UserResponseType | null>(null);
+  console.log("author", author);
+  const fetUser = async () => {
+    try {
+      const user = await getUserById(author);
+      setUser(user);
+      console.log("user", user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetUser();
+  }, []);
+
+  return (
+    <CommentItem>
+      <span>{text}</span> <CommentAuthor>By: {user?.name}</CommentAuthor>
+    </CommentItem>
+  );
+};
+
 const QuestionDetail: FC = () => {
   const params = useParams();
   const [question, setQuestion] = useState<QuestionType | null>(null);
@@ -42,11 +69,6 @@ const QuestionDetail: FC = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const getUser = async (id: string) => {
-    const user = await getUserById(id);
-    return user;
   };
 
   useEffect(() => {
@@ -84,10 +106,9 @@ const QuestionDetail: FC = () => {
         <Button variant="contained">Answer</Button>
       </ButtonGroup>
       {question.comments.length > 0 &&
-        question.comments.map((comment) => (
-          <CommentItem>
-            <span>{comment.text}</span> <CommentAuthor>By: </CommentAuthor>
-          </CommentItem>
+        question.comments.map((comment: any) => (
+          /* @ts-ignore */
+          <RenderComment {...comment} />
         ))}
       <CommentContainer></CommentContainer>
 

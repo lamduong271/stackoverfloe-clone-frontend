@@ -16,11 +16,14 @@ export const getRegisterResponseData = async (
   email: string,
   password: string
 ): Promise<string> => {
-  const { data: authResponseData } = await instance.post("/auth/register", {
-    name,
-    email,
-    password,
-  });
+  const { data: authResponseData } = await instance.post(
+    "/user/auth/register",
+    {
+      name,
+      email,
+      password,
+    }
+  );
   return authResponseData;
 };
 
@@ -28,7 +31,7 @@ export const getLoginResponseDate = async (
   email: string,
   password: string
 ): Promise<LoginResponseType> => {
-  const { data: authResponseData } = await instance.post("/auth/login", {
+  const { data: authResponseData } = await instance.post("/user/auth/login", {
     email,
     password,
   });
@@ -47,7 +50,7 @@ interface AuthorType {
   name?: string;
 }
 export interface QuestionType {
-  author: AuthorType;
+  author: string;
   title: string;
   textBody: string;
   _id: string;
@@ -110,7 +113,7 @@ export const postComment = async ({
   return authResponseData;
 };
 
-interface UserResponseType {
+export interface UserResponseType {
   name: string;
   email: string;
 }
