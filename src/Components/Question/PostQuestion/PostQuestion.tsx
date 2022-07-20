@@ -2,12 +2,12 @@ import { FC, FormEvent, useState } from "react";
 import { FormControl, Box, TextField, Button } from "@mui/material";
 import MarkdownEditor from "./MarkdownEditor";
 import { convertToRaw, EditorState } from "draft-js";
-import { QuestionForm } from "./Question.styles";
+import { QuestionForm } from "./PostQuestion.styles";
 import draftToHtml from "draftjs-to-html";
 import { postQuestionResponseDate } from "../../../Services/request";
 import { useNavigate } from "react-router-dom";
 
-const Question: FC = () => {
+const PostQuestion: FC = () => {
   const [questionBody, setQuestionBody] = useState(EditorState.createEmpty());
   const [questionTitle, setQuestionTitle] = useState<string>("");
   const [postedQuestion, setPostedQuestion] = useState<any>(null);
@@ -93,4 +93,4 @@ const Question: FC = () => {
   );
 };
 
-export default Question;
+export default PostQuestion;

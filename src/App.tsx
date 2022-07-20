@@ -6,8 +6,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Register from "./Components/Register/Register";
 import Home from "./Components/Home/Home";
 import Header from "./Components/Header/Header";
-import Question from "./Components/Question/Question/Question";
 import QuestionList from "./Components/Question/QuestionList/QuestionList";
+import QuestionDetail from "./Components/Question/QuestionDetails/QuestionDetail";
+import PostQuestion from "./Components/Question/PostQuestion/PostQuestion";
 
 const ProtectedRoutes: FC<{ component: ReactElement }> = ({ component }) => {
   const { jwtToken } = useAppContext();
@@ -27,9 +28,10 @@ const Components = () => {
           <Route path="/" element={<ProtectedRoutes component={<Home />} />} />
           <Route
             path="/post-question"
-            element={<ProtectedRoutes component={<Question />} />}
+            element={<ProtectedRoutes component={<PostQuestion />} />}
           />
           <Route path="/questions" element={<QuestionList />} />
+          <Route path="/question/:id" element={<QuestionDetail />} />
           {/* <Route path='/posts/:sender' element={<ProtectedRoutes />} /> */}
         </Routes>
       </BrowserRouter>

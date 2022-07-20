@@ -78,6 +78,11 @@ export const getAllQuestionsResponseDate = async (): Promise<
   return allQuestionsResponse;
 };
 
+export const getQuestionById = async (id: string): Promise<QuestionType> => {
+  const { data: question } = await instance.get(`/question/${id}`);
+  return question;
+};
+
 interface CommentPayload {
   text: string;
   post: string;
@@ -103,4 +108,13 @@ export const postComment = async ({
     config
   );
   return authResponseData;
+};
+
+interface UserResponseType {
+  name: string;
+  email: string;
+}
+export const getUserById = async (id: string): Promise<UserResponseType> => {
+  const { data: user } = await instance.get(`/user/${id}`, config);
+  return user;
 };
