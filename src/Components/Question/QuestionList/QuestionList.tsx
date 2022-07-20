@@ -3,6 +3,7 @@ import {
   getAllQuestionsResponseDate,
   QuestionType,
 } from "../../../Services/request";
+import QuestionItem from "../QuestionItem/QuestionItem";
 import { QuestionListContainer } from "./QuestionList.styles";
 
 const QuestionList: FC = () => {
@@ -24,10 +25,7 @@ const QuestionList: FC = () => {
   return (
     <QuestionListContainer>
       {questions.map((question) => (
-        <div>
-          <div>title: {question.title}</div>
-          <div>content : {question.textBody}</div>
-        </div>
+        <QuestionItem key={question._id} {...question} />
       ))}
     </QuestionListContainer>
   );

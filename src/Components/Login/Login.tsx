@@ -13,7 +13,7 @@ import { getLoginResponseDate } from "../../Services/request";
 const Login: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const { setJwtToken } = useAppContext();
+  const { setJwtToken, setUser } = useAppContext();
   const navigate = useNavigate();
 
   const submitFeedbackHandler = async (e: FormEvent): Promise<void> => {
@@ -21,6 +21,11 @@ const Login: FC = () => {
     const authResponseData = await getLoginResponseDate(email, password);
     if (authResponseData.success) {
       setJwtToken(authResponseData.token);
+      setUser({
+        _id: authResponseData.user._id,
+        name: authResponseData.user.name,
+        email: authResponseData.user.email,
+      });
       localStorage.setItem("jwtToken", authResponseData.token);
       navigate("/");
     }

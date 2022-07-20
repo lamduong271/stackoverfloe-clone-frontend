@@ -1,8 +1,14 @@
 import { instance } from "./api";
 
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+}
 interface LoginResponseType {
   success: boolean;
   token: string;
+  user: User;
 }
 
 export const getRegisterResponseData = async (
@@ -46,15 +52,15 @@ export interface QuestionType {
   textBody: string;
   _id: string;
   created: string;
-  votes?: [any];
-  comments?: [any];
-  answers?: [any];
+  votes: [any];
+  comments: [any];
+  answers: [any];
 }
 export const postQuestionResponseDate = async (
   title: string,
   textBody: string
 ): Promise<QuestionType> => {
-  const { data: authResponseData } = await instance.post(
+  const { data: postQuestionResponse } = await instance.post(
     "/question",
     {
       title,
@@ -62,12 +68,39 @@ export const postQuestionResponseDate = async (
     },
     config
   );
-  return authResponseData;
+  return postQuestionResponse;
 };
 
 export const getAllQuestionsResponseDate = async (): Promise<
   QuestionType[]
 > => {
-  const { data: authResponseData } = await instance.get("/question");
+  const { data: allQuestionsResponse } = await instance.get("/question");
+  return allQuestionsResponse;
+};
+
+interface CommentPayload {
+  text: string;
+  post: string;
+}
+interface PostCommentResponse {
+  author: string;
+  text: string;
+  post: string;
+  _id: string;
+  created: string;
+}
+
+export const postComment = async ({
+  text,
+  post,
+}: CommentPayload): Promise<PostCommentResponse[]> => {
+  const { data: authResponseData } = await instance.post(
+    "/comment",
+    {
+      text,
+      post,
+    },
+    config
+  );
   return authResponseData;
 };

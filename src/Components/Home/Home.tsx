@@ -17,7 +17,7 @@ const Home: FC = () => {
       >
         <TextField id="outlined-basic" label="Search" variant="outlined" />
       </Box>
-      <Button onClick={() => navigate("/question")} variant="contained">
+      <Button onClick={() => navigate("/post-question")} variant="contained">
         Create Question
       </Button>
     </HomeContainer>
