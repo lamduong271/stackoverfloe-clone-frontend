@@ -12,18 +12,11 @@ import {
   QuestionBody,
   QuestionContent,
   ButtonGroup,
-  CommentBody,
-  QuestionFooter,
 } from "./QuestionItem.styles";
 import moment from "moment";
 import { Button } from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-// import { useAppContext } from "../../../Services/app-context";
-import { postComment } from "../../../Services/request";
+import { useNavigate } from "react-router-dom";
+import parse from "html-react-parser";
 
 const QuestionItem: FC<QuestionType> = ({
   _id,
@@ -33,18 +26,8 @@ const QuestionItem: FC<QuestionType> = ({
   comments,
   answers,
 }) => {
-  const [openCommentModal, setOpenCommentModal] = useState<boolean>(false);
-  const [comment, setComment] = useState("");
+  const navigate = useNavigate();
   // const { user } = useAppContext();
-
-  const postCommentHandler = async (): Promise<void> => {
-    try {
-      await postComment({ text: comment, post: _id });
-      await getAllQuestionsResponseDate();
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <ListItemWrapper>
@@ -57,44 +40,20 @@ const QuestionItem: FC<QuestionType> = ({
           </PostedDate>
         </QuestionHeader>
         <QuestionBody>
-          <QuestionContent>{textBody}</QuestionContent>
+          <QuestionContent>{parse(textBody)}</QuestionContent>
           <ButtonGroup>
-            <Button variant="contained">Details</Button>
             <Button
-              onClick={() => setOpenCommentModal(true)}
+              onClick={() => navigate(`/question/${_id}`)}
               variant="contained"
             >
-              Comment
+              Details
             </Button>
-            <Button variant="contained">Answer</Button>
           </ButtonGroup>
-        </QuestionBody>
-        <QuestionFooter>
-          <div> comment: {comments?.length}</div>
-          <div> answer: {answers?.length}</div>
-        </QuestionFooter>
-      </ItemContent>
 
-      <Dialog
-        open={openCommentModal}
-        keepMounted
-        onClose={() => setOpenCommentModal(false)}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"Comment"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            <CommentBody
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenCommentModal(false)}>Discard</Button>
-          <Button onClick={postCommentHandler}>Post comment</Button>
-        </DialogActions>
-      </Dialog>
+          <div>Comments :{comments.length}</div>
+          <div>Answer :{answers.length}</div>
+        </QuestionBody>
+      </ItemContent>
     </ListItemWrapper>
   );
 };

@@ -27,10 +27,6 @@ const PostQuestion: FC = () => {
       console.log(error);
     }
   };
-  console.log(
-    questionTitle,
-    draftToHtml(convertToRaw(questionBody.getCurrentContent()))
-  );
   const resetAll = () => {
     setPostedQuestion(null);
     setQuestionBody(EditorState.createEmpty());
@@ -52,44 +48,50 @@ const PostQuestion: FC = () => {
     );
   }
   return (
-    <QuestionForm>
-      <div>
-        <h2 style={{ textAlign: "center" }}>Question form</h2>
-        <FormControl>
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "600px" },
-            }}
-          >
-            <label htmlFor="title"> Question Title </label>
+    <>
+      <QuestionForm>
+        <div>
+          <h2 style={{ textAlign: "center" }}>Question form</h2>
+          <FormControl>
+            <Box
+              component="form"
+              sx={{
+                "& > :not(style)": { m: 1, width: "600px" },
+              }}
+            >
+              <label htmlFor="title"> Question Title </label>
+              <br />
+              <TextField
+                id="outlined-basic"
+                label="Question title"
+                variant="outlined"
+                value={questionTitle}
+                onChange={(e) => setQuestionTitle(e.target.value)}
+              />
+            </Box>
+            <Box
+              component="form"
+              sx={{
+                "& > :not(style)": { m: 1, width: "600px" },
+              }}
+            >
+              <label htmlFor="body"> Question Body </label>
+              <MarkdownEditor
+                editorBodyText={questionBody}
+                setEditorBodyText={setQuestionBody}
+              />
+            </Box>
+            <Button onClick={submitQuestion} variant="contained">
+              Submit question
+            </Button>
             <br />
-            <TextField
-              id="outlined-basic"
-              label="Question title"
-              variant="outlined"
-              value={questionTitle}
-              onChange={(e) => setQuestionTitle(e.target.value)}
-            />
-          </Box>
-          <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "600px" },
-            }}
-          >
-            <label htmlFor="body"> Question Body </label>
-            <MarkdownEditor
-              questionBody={questionBody}
-              setQuestionBody={setQuestionBody}
-            />
-          </Box>
-          <Button onClick={submitQuestion} variant="contained">
-            Submit question
-          </Button>
-        </FormControl>
-      </div>
-    </QuestionForm>
+            <Button onClick={() => navigate("/")} variant="outlined">
+              Back to List
+            </Button>
+          </FormControl>
+        </div>
+      </QuestionForm>
+    </>
   );
 };
 

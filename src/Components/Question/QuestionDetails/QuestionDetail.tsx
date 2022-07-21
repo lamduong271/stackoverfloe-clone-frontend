@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   getAllQuestionsResponseDate,
   getQuestionById,
@@ -28,6 +28,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import MarkdownEditor from "../PostQuestion/MarkdownEditor";
+import { convertToRaw, EditorState } from "draft-js";
 
 const RenderComment: FC<{ author: string; text: string }> = ({
   author,
@@ -60,6 +62,9 @@ const QuestionDetail: FC = () => {
   const [question, setQuestion] = useState<QuestionType | null>(null);
   const [openCommentModal, setOpenCommentModal] = useState<boolean>(false);
   const [comment, setComment] = useState("");
+  const [openAnswerModal, setOpenAnswerModal] = useState<boolean>(false);
+  const [answer, setAnswer] = useState(EditorState.createEmpty());
+  const navigate = useNavigate();
   // const { user } = useAppContext();
 
   const getQuestion = async () => {
@@ -83,7 +88,7 @@ const QuestionDetail: FC = () => {
   const postCommentHandler = async (): Promise<void> => {
     try {
       await postComment({ text: comment, post: question._id as string });
-      await getAllQuestionsResponseDate();
+      await getQuestion();
       setOpenCommentModal(false);
     } catch (error) {
       console.log(error);
@@ -99,11 +104,15 @@ const QuestionDetail: FC = () => {
         <QuestionBody>{parse(textBody)}</QuestionBody>
       </QuestionContent>
       <ButtonGroup>
-        <Button variant="contained">Details</Button>
+        <Button onClick={() => navigate("/")} variant="contained">
+          Back to question list
+        </Button>
         <Button onClick={() => setOpenCommentModal(true)} variant="contained">
           Comment
         </Button>
-        <Button variant="contained">Answer</Button>
+        <Button onClick={() => setOpenAnswerModal(true)} variant="contained">
+          Answer
+        </Button>
       </ButtonGroup>
       {question.comments.length > 0 &&
         question.comments.map((comment: any) => (
@@ -111,7 +120,7 @@ const QuestionDetail: FC = () => {
           <RenderComment {...comment} />
         ))}
       <CommentContainer></CommentContainer>
-
+      {/* Comment modal*/}
       <Dialog
         open={openCommentModal}
         keepMounted
@@ -130,6 +139,28 @@ const QuestionDetail: FC = () => {
         <DialogActions>
           <Button onClick={() => setOpenCommentModal(false)}>Discard</Button>
           <Button onClick={postCommentHandler}>Post comment</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Answer Modal */}
+      <Dialog
+        open={openAnswerModal}
+        keepMounted
+        onClose={() => setOpenAnswerModal(false)}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Answer"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            <MarkdownEditor
+              editorBodyText={answer}
+              setEditorBodyText={setAnswer}
+            />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenAnswerModal(false)}>Discard</Button>
+          <Button onClick={postCommentHandler}>Post Answer</Button>
         </DialogActions>
       </Dialog>
     </QuestionDetailContainer>

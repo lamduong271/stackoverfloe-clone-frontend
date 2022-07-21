@@ -118,6 +118,6 @@ export interface UserResponseType {
   email: string;
 }
 export const getUserById = async (id: string): Promise<UserResponseType> => {
-  const { data: user } = await instance.get(`/user/${id}`, config);
+  const { data: user } = await instance.get(`/user/${id}`);
   return user;
 };

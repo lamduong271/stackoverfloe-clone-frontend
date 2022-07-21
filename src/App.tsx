@@ -25,12 +25,12 @@ const Components = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<ProtectedRoutes component={<Home />} />} />
+          {/* <Route path="/" element={<ProtectedRoutes component={<Home />} />} /> */}
           <Route
             path="/post-question"
             element={<ProtectedRoutes component={<PostQuestion />} />}
           />
-          <Route path="/questions" element={<QuestionList />} />
+          <Route path="/" element={<QuestionList />} />
           <Route path="/question/:id" element={<QuestionDetail />} />
           {/* <Route path='/posts/:sender' element={<ProtectedRoutes />} /> */}
         </Routes>

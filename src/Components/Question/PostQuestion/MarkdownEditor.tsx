@@ -6,19 +6,19 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./MarkdownEditor.styles.scss";
 
 interface EditorProp {
-  setQuestionBody: Dispatch<SetStateAction<EditorState>>;
-  questionBody: EditorState;
+  setEditorBodyText: Dispatch<SetStateAction<EditorState>>;
+  editorBodyText: EditorState;
 }
 const MarkdownEditor: React.FC<EditorProp> = (props) => {
-  const { setQuestionBody, questionBody } = props;
-  const onEditorStateChange = (questionBody: EditorState) => {
-    setQuestionBody(questionBody);
+  const { setEditorBodyText, editorBodyText } = props;
+  const onEditorStateChange = (editorBodyText: EditorState) => {
+    setEditorBodyText(editorBodyText);
   };
 
   return (
     <div>
       <Editor
-        editorState={questionBody}
+        editorState={editorBodyText}
         wrapperClassName="wrapperClassName"
         editorClassName="editorClassName"
         toolbarClassName="toolbarClassName"
