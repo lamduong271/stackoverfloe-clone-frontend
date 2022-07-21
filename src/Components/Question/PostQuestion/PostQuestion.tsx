@@ -2,7 +2,7 @@ import { FC, FormEvent, useState } from "react";
 import { FormControl, Box, TextField, Button } from "@mui/material";
 import MarkdownEditor from "./MarkdownEditor";
 import { convertToRaw, EditorState } from "draft-js";
-import { QuestionForm } from "./PostQuestion.styles";
+import { QuestionForm, QuestionPostedAlert } from "./PostQuestion.styles";
 import draftToHtml from "draftjs-to-html";
 import { postQuestionResponseDate } from "../../../Services/request";
 import { useNavigate } from "react-router-dom";
@@ -35,8 +35,8 @@ const PostQuestion: FC = () => {
 
   if (postedQuestion) {
     return (
-      <div>
-        Question posted
+      <QuestionPostedAlert>
+        Question posted:
         <div>{postedQuestion.title}</div>
         <Button onClick={() => resetAll()} variant="contained">
           Post another question
@@ -44,7 +44,7 @@ const PostQuestion: FC = () => {
         <Button onClick={() => navigate("/")} variant="contained">
           Go to question list
         </Button>
-      </div>
+      </QuestionPostedAlert>
     );
   }
   return (
