@@ -38,13 +38,29 @@ export const QuestionFooter = styled.div`
   padding: 16px 0;
 `;
 
-export const CommentContainer = styled.div``;
+export const CommentContainer = styled.div`
+  background-color: #fff4d2;
+  padding: 20px;
+  margin: 20px 40px;
+`;
+
+export const AnswerContainer = styled.div`
+  background-color: #edf7ff;
+  padding: 20px;
+`;
 
 export const CommentItem = styled.div`
   padding: 8px 20px;
+  border-bottom: 1px solid;
+  margin: 0 20px;
 `;
 
-export const CommentAuthor = styled.span`
-  background-color: #cccccc;
+export const CommentText = styled.span`
+  font-size: 16px;
+`;
+
+export const CommentAuthorAndDate = styled.span`
   border-radius: 2px;
+  padding-left: 8px;
+  font-size: 12px;
 `;

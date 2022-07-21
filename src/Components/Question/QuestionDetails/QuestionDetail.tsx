@@ -22,7 +22,9 @@ import {
   ButtonGroup,
   CommentBody,
   CommentItem,
-  CommentAuthor,
+  CommentAuthorAndDate,
+  AnswerContainer,
+  CommentText,
 } from "./QuestionDetail.styled";
 import { Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
@@ -35,9 +37,10 @@ import { convertToRaw, EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import RenderAnswer from "../Answer/Answer";
 
-const RenderComment: FC<{ author: string; text: string }> = ({
+const RenderComment: FC<{ author: string; text: string; created: string }> = ({
   author,
   text,
+  created,
 }) => {
   const [user, setUser] = useState<UserResponseType | null>(null);
   console.log("author", author);
@@ -56,7 +59,11 @@ const RenderComment: FC<{ author: string; text: string }> = ({
 
   return (
     <CommentItem>
-      <span>{text}</span> <CommentAuthor>By: {user?.name}</CommentAuthor>
+      <CommentText>{text}</CommentText> -
+      <CommentAuthorAndDate>
+        By: {user?.name} |{" "}
+        {moment(created).format("dddd, MMMM Do YYYY, h:mm:ss a")}
+      </CommentAuthorAndDate>
     </CommentItem>
   );
 };
@@ -132,18 +139,22 @@ const QuestionDetail: FC = () => {
           Answer
         </Button>
       </ButtonGroup>
-      {comments.length > 0 &&
-        comments.map((comment: any) => (
-          /* @ts-ignore */
-          <RenderComment {...comment} />
-        ))}
-      <CommentContainer></CommentContainer>
 
-      {answers.length > 0 &&
-        answers.map((answer: AnswerResponseType) => (
-          /* @ts-ignore */
-          <RenderAnswer {...answer} />
-        ))}
+      <CommentContainer>
+        Comments:
+        {comments.length > 0 &&
+          comments.map((comment: any) => (
+            /* @ts-ignore */
+            <RenderComment {...comment} />
+          ))}
+      </CommentContainer>
+      <AnswerContainer>
+        {answers.length > 0 &&
+          answers.map((answer: AnswerResponseType) => (
+            /* @ts-ignore */
+            <RenderAnswer {...answer} />
+          ))}
+      </AnswerContainer>
       {/* Comment modal*/}
       <Dialog
         open={openCommentModal}

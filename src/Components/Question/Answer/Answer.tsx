@@ -4,9 +4,16 @@ import {
   getUserById,
   UserResponseType,
 } from "../../../Services/request";
-import { AnswerAuthor, AnswerContainer } from "./Answer.styles";
+import {
+  AnswerAuthor,
+  AnswerContainer,
+  AnswerDate,
+  VotingWrapper,
+} from "./Answer.styles";
 import parse from "html-react-parser";
 import moment from "moment";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const RenderAnswer: FC<AnswerResponseType> = ({
   textBody,
@@ -30,9 +37,18 @@ const RenderAnswer: FC<AnswerResponseType> = ({
 
   return (
     <AnswerContainer>
-      {parse(textBody)}
-      <AnswerAuthor>By: {user?.name}</AnswerAuthor>
-      {moment(created).format("dddd, MMMM Do YYYY, h:mm:ss a")}
+      <VotingWrapper>
+        <ArrowDropUpIcon fontSize="large"></ArrowDropUpIcon>
+        <span>20</span>
+        <ArrowDropDownIcon fontSize="large"></ArrowDropDownIcon>
+      </VotingWrapper>
+      <div>
+        {parse(textBody)}
+        <AnswerAuthor>By: {user?.name}</AnswerAuthor>
+        <AnswerDate>
+          {moment(created).format("dddd, MMMM Do YYYY, h:mm:ss a")}
+        </AnswerDate>
+      </div>
     </AnswerContainer>
   );
 };
