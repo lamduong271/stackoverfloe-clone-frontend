@@ -1,6 +1,6 @@
 ### live version
 
-`https://lamduong-final.herokuapp.com/`
+https://lamduong-final.herokuapp.com/
 
  Install dependencies 
 
