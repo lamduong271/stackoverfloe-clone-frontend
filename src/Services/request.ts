@@ -121,3 +121,39 @@ export const getUserById = async (id: string): Promise<UserResponseType> => {
   const { data: user } = await instance.get(`/user/${id}`);
   return user;
 };
+
+export interface AnswerResponseType {
+  author: string;
+  textBody: string;
+  score: 0;
+  post: string;
+  _id: string;
+  created: string;
+  votes: [any];
+  comments: [any];
+}
+interface PostAnswerPayload {
+  textBody: string;
+  post: string;
+}
+export const postAnswer = async ({
+  textBody,
+  post,
+}: PostAnswerPayload): Promise<AnswerResponseType> => {
+  const { data: answer } = await instance.post(
+    "/answer",
+    {
+      textBody,
+      post,
+    },
+    config
+  );
+  return answer;
+};
+
+export const getAnswerById = async (
+  id: string
+): Promise<AnswerResponseType[]> => {
+  const { data: answers } = await instance.get(`/answer/${id}`);
+  return answers;
+};

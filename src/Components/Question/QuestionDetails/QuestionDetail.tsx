@@ -1,9 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  AnswerResponseType,
   getAllQuestionsResponseDate,
   getQuestionById,
   getUserById,
+  postAnswer,
   postComment,
   QuestionType,
   UserResponseType,
@@ -30,6 +32,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import MarkdownEditor from "../PostQuestion/MarkdownEditor";
 import { convertToRaw, EditorState } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import RenderAnswer from "../Answer/Answer";
 
 const RenderComment: FC<{ author: string; text: string }> = ({
   author,
@@ -64,6 +68,7 @@ const QuestionDetail: FC = () => {
   const [comment, setComment] = useState("");
   const [openAnswerModal, setOpenAnswerModal] = useState<boolean>(false);
   const [answer, setAnswer] = useState(EditorState.createEmpty());
+
   const navigate = useNavigate();
   // const { user } = useAppContext();
 
@@ -76,6 +81,19 @@ const QuestionDetail: FC = () => {
     }
   };
 
+  const postAnswerHandler = async () => {
+    try {
+      const answerResponse = await postAnswer({
+        textBody: draftToHtml(convertToRaw(answer.getCurrentContent())),
+        post: question?._id as string,
+      });
+      if (answerResponse) {
+        await getQuestion();
+        setOpenAnswerModal(false);
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
     getQuestion();
   }, []);
@@ -83,7 +101,7 @@ const QuestionDetail: FC = () => {
   if (question === null) {
     return null;
   }
-  const { title, created, textBody } = question;
+  const { title, created, textBody, comments, answers } = question;
 
   const postCommentHandler = async (): Promise<void> => {
     try {
@@ -114,12 +132,18 @@ const QuestionDetail: FC = () => {
           Answer
         </Button>
       </ButtonGroup>
-      {question.comments.length > 0 &&
-        question.comments.map((comment: any) => (
+      {comments.length > 0 &&
+        comments.map((comment: any) => (
           /* @ts-ignore */
           <RenderComment {...comment} />
         ))}
       <CommentContainer></CommentContainer>
+
+      {answers.length > 0 &&
+        answers.map((answer: AnswerResponseType) => (
+          /* @ts-ignore */
+          <RenderAnswer {...answer} />
+        ))}
       {/* Comment modal*/}
       <Dialog
         open={openCommentModal}
@@ -160,7 +184,7 @@ const QuestionDetail: FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenAnswerModal(false)}>Discard</Button>
-          <Button onClick={postCommentHandler}>Post Answer</Button>
+          <Button onClick={postAnswerHandler}>Post Answer</Button>
         </DialogActions>
       </Dialog>
     </QuestionDetailContainer>
