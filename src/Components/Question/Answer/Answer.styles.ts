@@ -1,10 +1,13 @@
 import styled from "styled-components";
 
 export const AnswerContainer = styled.div`
-  border-bottom: 1px solid #bcbcbc;
   padding: 20px;
   display: flex;
   gap: 20px;
+`;
+
+export const Answer = styled.div`
+  border-bottom: 1px solid #bcbcbc;
 `;
 
 export const AnswerAuthor = styled.div`
@@ -22,4 +25,13 @@ export const VotingWrapper = styled.div`
   width: 30px;
   justify-content: center;
   align-items: center;
+`;
+
+export const AnswerComment = styled.div`
+  position: absolute;
+  right: 20px;
+`;
+
+export const AnswerCommentWrapper = styled.div`
+  font-size: 12px;
 `;

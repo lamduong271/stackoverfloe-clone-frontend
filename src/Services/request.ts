@@ -88,7 +88,8 @@ export const getQuestionById = async (id: string): Promise<QuestionType> => {
 
 interface CommentPayload {
   text: string;
-  post: string;
+  post?: string;
+  answer?: string;
 }
 interface PostCommentResponse {
   author: string;
@@ -101,16 +102,18 @@ interface PostCommentResponse {
 export const postComment = async ({
   text,
   post,
+  answer,
 }: CommentPayload): Promise<PostCommentResponse[]> => {
-  const { data: authResponseData } = await instance.post(
+  const { data: postResponseData } = await instance.post(
     "/comment",
     {
       text,
       post,
+      answer,
     },
     config
   );
-  return authResponseData;
+  return postResponseData;
 };
 
 export interface UserResponseType {
@@ -153,7 +156,7 @@ export const postAnswer = async ({
 
 export const getAnswerById = async (
   id: string
-): Promise<AnswerResponseType[]> => {
+): Promise<AnswerResponseType> => {
   const { data: answers } = await instance.get(`/answer/${id}`);
   return answers;
 };
