@@ -1,4 +1,4 @@
-import React, { FC, FormEvent, useState } from "react";
+import React, { FC, FormEvent, useEffect, useState } from "react";
 import {
   Button,
   FormField,
@@ -6,15 +6,19 @@ import {
   LoginForm,
   LoginWrapper,
   CongratComponent,
+  ErrorWrapper,
 } from "./Register.styles";
 import { useNavigate } from "react-router-dom";
 import { getRegisterResponseData } from "../../Services/request";
+import { useAppContext } from "../../Services/app-context";
 
 const Register: FC = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
+  const [error, setError] = useState("");
+  const { user } = useAppContext();
   const navigate = useNavigate();
 
   const registerHandler = async (e: FormEvent): Promise<void> => {
@@ -28,10 +32,16 @@ const Register: FC = () => {
       if (authResponseData === "ok") {
         setRegisterSuccess(true);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      setError(error.response.data.error);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
 
   const RenderSuccessScreen: FC = () => {
     return (
@@ -41,6 +51,15 @@ const Register: FC = () => {
       </CongratComponent>
     );
   };
+
+  if (error) {
+    return (
+      <ErrorWrapper>
+        {error}
+        <Button onClick={() => setError("")}>Try again</Button>
+      </ErrorWrapper>
+    );
+  }
 
   return (
     <LoginWrapper>
@@ -66,7 +85,7 @@ const Register: FC = () => {
               type="email"
               onChange={(event) => setEmail(event.target.value)}
             />
-            <label htmlFor="email"> Email </label>
+            <label htmlFor="email"> Password </label>
             <Input
               name="password"
               id="password"

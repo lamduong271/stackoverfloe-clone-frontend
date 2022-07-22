@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState } from "react";
+import { FC, FormEvent, useEffect, useState } from "react";
 import {
   Button,
   FormField,
@@ -13,7 +13,7 @@ import { getLoginResponseDate } from "../../Services/request";
 const Login: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const { setJwtToken, setUser } = useAppContext();
+  const { setJwtToken, setUser, user } = useAppContext();
   const navigate = useNavigate();
 
   const submitFeedbackHandler = async (e: FormEvent): Promise<void> => {
@@ -27,9 +27,22 @@ const Login: FC = () => {
         email: authResponseData.user.email,
       });
       localStorage.setItem("jwtToken", authResponseData.token);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          _id: authResponseData.user._id,
+          name: authResponseData.user.name,
+          email: authResponseData.user.email,
+        })
+      );
       navigate("/");
     }
   };
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <LoginWrapper>
@@ -55,6 +68,8 @@ const Login: FC = () => {
 
         <Button>Login</Button>
       </LoginForm>
+
+      <Button onClick={() => navigate("/register")}>Register</Button>
     </LoginWrapper>
   );
 };

@@ -13,7 +13,7 @@ const QuestionList: FC = () => {
   const [search, setSearch] = useState("");
   const [filteredQuestions, setFilteredQuestions] = useState<
     QuestionType[] | null
-  >(null);
+  >(questions);
   useEffect(() => {
     fetchAllQuestions();
   }, []);
@@ -33,7 +33,7 @@ const QuestionList: FC = () => {
       const filteredQuestions = questions.filter((question) =>
         question.title.includes(search)
       );
-      setFilteredQuestions(filteredQuestions);
+      setQuestions(filteredQuestions);
     }
   };
   if (questions === null) {

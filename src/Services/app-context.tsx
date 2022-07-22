@@ -26,7 +26,10 @@ export const AppContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [jwtToken, setJwtToken] = useState<string>("");
-  const [user, setUser] = useState<User | null>(null);
+  const userFromLocalStorage = localStorage.getItem("user");
+  const [user, setUser] = useState<User | null>(
+    (userFromLocalStorage && (JSON.parse(userFromLocalStorage) as User)) || null
+  );
   return (
     <AppContext.Provider value={{ jwtToken, setJwtToken, setUser, user }}>
       {children}

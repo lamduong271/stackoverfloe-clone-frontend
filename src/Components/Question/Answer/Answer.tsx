@@ -48,7 +48,7 @@ const RenderAnsComment: FC<{ id: string }> = ({ id }) => {
   if (comments === null || comments.length === 0) {
     return null;
   }
-  console.log("comments ", comments);
+
   return (
     <CommentContainer>
       Comments
@@ -69,12 +69,10 @@ const RenderAnswer: FC<AnswerResponseType> = ({
   const [user, setUser] = useState<UserResponseType | null>(null);
   const [answerCommentModel, setAnswerCommentModel] = useState<boolean>(false);
   const [answerComment, setAnswerComment] = useState<string>("");
-  console.log("author", author);
   const fetUser = async () => {
     try {
       const user = await getUserById(author);
       setUser(user);
-      console.log("user", user);
     } catch (error) {
       console.log(error);
     }

@@ -36,3 +36,8 @@ export const CongratComponent = styled.div`
   text-align: center;
   color: whitesmoke;
 `;
+
+export const ErrorWrapper = styled.div`
+  background-color: pink;
+  padding: 20px;
+`;

@@ -43,12 +43,11 @@ const RenderComment: FC<{ author: string; text: string; created: string }> = ({
   created,
 }) => {
   const [user, setUser] = useState<UserResponseType | null>(null);
-  console.log("author", author);
+
   const fetUser = async () => {
     try {
       const user = await getUserById(author);
       setUser(user);
-      console.log("user", user);
     } catch (error) {
       console.log(error);
     }
