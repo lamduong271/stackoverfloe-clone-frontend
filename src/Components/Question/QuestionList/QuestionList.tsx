@@ -28,17 +28,27 @@ const QuestionList: FC = () => {
   };
 
   const searchQuestion = () => {
-    console.log("haha");
-    if (questions !== null && search !== "") {
+    if (questions !== null && search) {
       const filteredQuestions = questions.filter((question) =>
         question.title.includes(search)
       );
-      setQuestions(filteredQuestions);
+      setFilteredQuestions(filteredQuestions);
+    } else {
+      setFilteredQuestions(questions);
     }
   };
+
   if (questions === null) {
     return <>Empty list</>;
   }
+
+  const renderQuestionList = () => {
+    if (filteredQuestions !== null) {
+      return filteredQuestions;
+    }
+    return questions;
+  };
+
   return (
     <QuestionListContainer>
       <Grid style={{ alignItems: "center" }} container spacing={2}>
@@ -72,7 +82,7 @@ const QuestionList: FC = () => {
           </Button>
         </Grid>
       </Grid>
-      {questions.map((question) => (
+      {renderQuestionList().map((question) => (
         <QuestionItem key={question._id} {...question} />
       ))}
     </QuestionListContainer>
