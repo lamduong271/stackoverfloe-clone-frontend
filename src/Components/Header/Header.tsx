@@ -65,7 +65,7 @@ const Header: React.FC = () => {
                 </Box>
               </Box>
             )}
-            <Button onClick={onLogOut}>Logout</Button>
+            {user && <Button onClick={onLogOut}>Logout</Button>}
           </div>
         </Toolbar>
       </Container>
