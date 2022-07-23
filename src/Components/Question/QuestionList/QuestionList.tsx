@@ -6,7 +6,7 @@ import {
   QuestionType,
 } from "../../../Services/request";
 import QuestionItem from "../QuestionItem/QuestionItem";
-import { QuestionListContainer } from "./QuestionList.styles";
+import { QuestionListContainer, SortingWrapper } from "./QuestionList.styles";
 
 const QuestionList: FC = () => {
   const [questions, setQuestions] = useState<QuestionType[] | null>(null);
@@ -32,7 +32,7 @@ const QuestionList: FC = () => {
       const filteredQuestions = questions.filter((question) =>
         question.title.includes(search)
       );
-      setFilteredQuestions(filteredQuestions);
+      setFilteredQuestions([...filteredQuestions]);
     } else {
       setFilteredQuestions(questions);
     }
@@ -45,8 +45,22 @@ const QuestionList: FC = () => {
   const renderQuestionList = () => {
     if (filteredQuestions !== null) {
       return filteredQuestions;
+    } else {
+      return questions;
     }
-    return questions;
+  };
+
+  const sortingQuestions = (direct: string) => {
+    const sortedQuestions = questions.sort(
+      (a: QuestionType, b: QuestionType) => {
+        if (direct === "asc") {
+          return new Date(a.created).getTime() - new Date(b.created).getTime();
+        } else {
+          return new Date(b.created).getTime() - new Date(a.created).getTime();
+        }
+      }
+    );
+    setQuestions([...sortedQuestions]);
   };
 
   return (
@@ -82,6 +96,15 @@ const QuestionList: FC = () => {
           </Button>
         </Grid>
       </Grid>
+      <SortingWrapper>
+        <div>Sort by created date</div>
+        <Button variant="outlined" onClick={() => sortingQuestions("desc")}>
+          Latest date
+        </Button>
+        <Button variant="outlined" onClick={() => sortingQuestions("asc")}>
+          Oldest date
+        </Button>
+      </SortingWrapper>
       {renderQuestionList().map((question) => (
         <QuestionItem key={question._id} {...question} />
       ))}
